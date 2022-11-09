@@ -57,10 +57,42 @@ function viewDatabase() {
 
 };
 
-// function viewEmployees() {
-//     connection.query(
-//         `SELECT
-//         employee.id,
-//         CONCAT (employee.first_name, ")`
-//     )
-// }
+function viewEmployees() {
+    connection.query(
+        `SELECT
+        employee.id,
+        CONCAT (employee.first_name, " ", employee.last_name) 
+        AS name, role.title, role.salary,
+        CONCAT (manager.first_name, " ", manager.last_name) 
+        AS manager, department.name AS department
+        FROM employee
+        JOIN role on employee.role_id = role.id
+        JOIN department on role.department_id = department.id
+        LEFT JOIN employee manager ON employee.manager_id = manager.id`,
+        function (err, result) {
+            if (err) {
+              console.log(err);  
+            }
+            console.table(result);
+            viewDatabase();
+        }
+    );
+}
+
+function viewDepts() {
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+        
+        console.table(res);
+        viewDatabase();
+    });
+}
+
+function viewRoles() {
+    connection.query("SELECT * FROM roles", function (err, res) {
+        if (err) throw err;
+        
+        console.table(res);
+        viewDatabase();
+    });
+}
