@@ -6,7 +6,7 @@ require("dotenv").config();
 
 const connection = mysql.createConnection({
     host: "localhost",
-    port: 3001,
+  //  port: 3001,
     user:"root",
     password: process.env.DB_PASSWORD,
     database: "organization_DB"
@@ -157,3 +157,5 @@ function addDepts() {
         ])
 }
 
+
+viewDatabase();
