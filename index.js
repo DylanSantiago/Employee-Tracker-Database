@@ -9,7 +9,7 @@ const connection = mysql.createConnection({
   //  port: 3001,
     user:"root",
     password: process.env.DB_PASSWORD,
-    database: "organization_DB"
+    database: "organization_db"
 });
 
 // connection.connect(function)

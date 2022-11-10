@@ -1,18 +1,19 @@
 DROP DATABASE IF EXISTS organization_db;
+
 CREATE DATABASE organization_db;
 
-use organization_db;
+USE organization_db;
 
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(25) NOT NULL,
+    name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(25) NOT NULL,
+    title VARCHAR(30) NOT NULL,
     salary DECIMAL(10,2) NOT NULL,
-    department_id INT NOT NULL,
+    department_id INT NOT NULL
 );
 
 CREATE TABLE employee (
@@ -20,5 +21,5 @@ CREATE TABLE employee (
     first_name VARCHAR(25) NOT NULL,
     last_name VARCHAR(25) NOT NULL,
     role_id INT NOT NULL,
-    manager_id INT NULL,
+    manager_id INT NULL
 );
