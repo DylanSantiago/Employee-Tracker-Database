@@ -6,14 +6,12 @@ require("dotenv").config();
 
 const connection = mysql.createConnection({
     host: "localhost",
-  //  port: 3001,
     user:"root",
     password: process.env.DB_PASSWORD,
     database: "organization_db"
 });
 
-// connection.connect(function)
-
+//  "Home" function that is an outlet to view all other sub functions
 function viewDatabase() {
     inquirer
         .prompt([
@@ -33,6 +31,7 @@ function viewDatabase() {
                 ],
             },
         ])
+        // Switch cases to filter what is being inputed
         .then(function ({response}) {
             switch (response) {
                 case "View all Employees":
@@ -64,6 +63,7 @@ function viewDatabase() {
 
 };
 
+// Sub function that selects specfic attributes to display in a table
 function viewEmployees() {
     connection.query(`SELECT employee.id, employee.first_name, employee.last_name, 
     role.title, role.salary, 
@@ -77,25 +77,27 @@ function viewEmployees() {
             console.table(res);
             viewDatabase();
         });
-}
+};
 
 function viewDepts() {
+    // Data from Dept is displayed on the console
     connection.query("SELECT * FROM department", function (err, res) {
         if (err) throw err;
         
         console.table(res);
         viewDatabase();
     });
-}
+};
 
 function viewRoles() {
+    // Data from roles is displayed on the console 
     connection.query("SELECT * FROM role", function (err, res) {
         if (err) throw err;
         
         console.table(res);
         viewDatabase();
     });
-}
+};
 
 function addEmployee() {
     inquirer
@@ -122,6 +124,7 @@ function addEmployee() {
             },
         ])
         .then(function (data) {
+            // After recieving data input, data is then placed into employee table
             connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)",
             [data.first_name, data.last_name, data.role, data.manager],
             function (err, result) {
@@ -130,7 +133,7 @@ function addEmployee() {
                 viewDatabase();
             });
         });   
-}
+};
 
 function addDepts() {
     inquirer
@@ -142,12 +145,14 @@ function addDepts() {
             },
         ])
         .then(function (data) {
+            // After recieving data input, data is then placed into dept table
             connection.query("INSERT INTO department (name) VALUES (?)",
             [data.name],
             function(err, res) {
                 if (err) throw err;
                
             })
+            // Updated data is then displayed onto the console log as a table
             connection.query("SELECT * FROM department", function (err, res) {
                 if (err) throw err;
                 console.table(res);
@@ -176,11 +181,13 @@ function addRole() {
             },
         ])
         .then(function (data) {
+            // After recieving data input, data is then placed into role table
             connection.query("INSERT INTO role (title, salary, department_id) VALUES (?,?,?);",
             [data.title, data.salary, data.department_id],
             function(err, res) {
                 if (err) throw err;
             })
+            // Updated data is then displayed onto the console log as a table
             connection.query("SELECT * FROM role", function (err, res) {
                 if (err) throw err;
                 console.table(res);
@@ -188,7 +195,7 @@ function addRole() {
             });
 
         });
-}
+};
 
 function updateRole() {
     inquirer
@@ -206,6 +213,7 @@ function updateRole() {
         ])
         .then(function (data) {
             connection.query(
+                // SQL feature that will change the selected employee and update them with a new role
                 "UPDATE employee SET role_id = ? WHERE id = ?",
                 [data.newRole, data.idEmp],
                 function (err, res) {
@@ -215,6 +223,6 @@ function updateRole() {
                 }
             );
         });
-}
+};
 
 viewDatabase();
