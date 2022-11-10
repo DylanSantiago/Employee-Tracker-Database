@@ -90,7 +90,7 @@ function viewDepts() {
 }
 
 function viewRoles() {
-    connection.query("SELECT * FROM roles", function (err, res) {
+    connection.query("SELECT * FROM role", function (err, res) {
         if (err) throw err;
         
         console.table(res);
@@ -123,11 +123,11 @@ function addEmployee() {
             },
         ])
         .then(function ({data}) {
-            connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)"),
+            connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)",
             [data.first_name, data.last_name, data.role, data.manager],
-            function (err, res) {
+            function (err, result) {
                 if (err) throw err;
-            }
+            });
         });
         connection.query(
         `SELECT
@@ -152,9 +152,23 @@ function addDepts() {
         .prompt([
             {
                 type: "input",
-                name: "",
+                name: "name",
+                message: "What is the new department called?",
             },
         ])
+        .then(function ({data}) {
+            connection.query("INSERT INTO department (name) VALUES (?)",
+            [data.name],
+            function(err, result) {
+                if (err) throw err;
+               
+            })
+            connection.query("SELECT * FROM department", function (err, result) {
+                if (err) throw err;
+                console.table(result);
+                viewDatabase();
+            });
+        });
 }
 
 
