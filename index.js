@@ -22,12 +22,13 @@ function viewDatabase() {
                 name: "response",
                 message: "What would you like to do?",
                 choices: [
-                    "View all Employess",
+                    "View all Employees",
                     "View all Departments",
                     "View all Roles",
                     "Add Employee",
                     "Add Department",
                     "Add Role",
+                    "Update Employee Role",
                     "Quit",
                 ],
             },
@@ -51,6 +52,9 @@ function viewDatabase() {
                     break;
                 case "Add Role":
                     addRole();
+                    break;
+                case "Update Employee Role":
+                    updateRole();
                     break;
                 case "Quit":
                     connection.end();
@@ -125,23 +129,7 @@ function addEmployee() {
                 console.table(data);
                 viewDatabase();
             });
-        });
-        // connection.query(
-        // `SELECT
-        // employee.id, employee.first_name, employee.last_name, 
-        // role.title, role.salary, department.name AS department,
-        // CONCAT (manager.first_name, " ", manager.last_name) 
-        // AS manager FROM employee
-        // LEFT JOIN role on employee.role_id = role.id
-        // LEFT JOIN department on role.department_id = department.id
-        // LEFT JOIN employee manager ON employee.manager_id = manager.id`,
-        // function (err, result) {
-        //     if (err) throw err;
-        //     console.table(result);
-        //     viewDatabase();
-        // }
-        // )
-
+        });   
 }
 
 function addDepts() {
@@ -202,5 +190,31 @@ function addRole() {
         });
 }
 
+function updateRole() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "idEmp",
+                message: "Which employee is being updated? Please enter ID."
+            },
+            {
+                type: "input",
+                name: "newRole",
+                message: "Which position is the employee being updated to? Please enter ID."
+            },
+        ])
+        .then(function (data) {
+            connection.query(
+                "UPDATE employee SET role_id = ? WHERE id = ?",
+                [data.newRole, data.idEmp],
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    viewDatabase();
+                }
+            );
+        });
+}
 
 viewDatabase();
