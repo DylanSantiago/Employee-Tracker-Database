@@ -103,12 +103,12 @@ function addEmployee() {
         .prompt([
             {
                 type:"input",
-                name:"first_name?",
+                name:"first_name",
                 message: "What is the new employee's first name?",
             },
             {
                 type:"input",
-                name:"last_name?",
+                name:"last_name",
                 message: "What is the new employee's last name?",
             },
             {
@@ -145,5 +145,15 @@ function addEmployee() {
         }
         )
 
+}
+
+function addDepts() {
+    inquirer
+        .prompt([
+            {
+                type: "input",
+                name: "",
+            },
+        ])
 }
 
