@@ -61,21 +61,18 @@ function viewDatabase() {
 };
 
 function viewEmployees() {
-    connection.query(
-        `SELECT
-        employee.id, employee.first_name, employee.last_name, 
-        role.title, role.salary, department.name AS department,
-        CONCAT (manager.first_name, " ", manager.last_name) 
-        AS manager FROM employee
-        LEFT JOIN role on employee.role_id = role.id
-        LEFT JOIN department on role.department_id = department.id
-        LEFT JOIN employee manager ON employee.manager_id = manager.id`, function (err, res) {
-            if (err) throw err;  
-            
+    connection.query(`SELECT employee.id, employee.first_name, employee.last_name, 
+    role.title, role.salary, 
+    department.name AS department, 
+    CONCAT (manager.first_name, ' ', manager.last_name) 
+    AS manager FROM employee LEFT JOIN role on employee.role_id = 
+    role.id LEFT JOIN department on role.department_id = 
+    department.id LEFT JOIN employee manager ON employee.manager_id = manager.id`, 
+    function (err, res) {
+        if (err) throw err;  
             console.table(res);
             viewDatabase();
-        }
-    );
+        });
 }
 
 function viewDepts() {
@@ -159,13 +156,13 @@ function addDepts() {
         .then(function (data) {
             connection.query("INSERT INTO department (name) VALUES (?)",
             [data.name],
-            function(err, result) {
+            function(err, res) {
                 if (err) throw err;
                
             })
-            connection.query("SELECT * FROM department", function (err, result) {
+            connection.query("SELECT * FROM department", function (err, res) {
                 if (err) throw err;
-                console.table(result);
+                console.table(res);
                 viewDatabase();
             });
         });
@@ -193,19 +190,17 @@ function addRole() {
         .then(function (data) {
             connection.query("INSERT INTO role (title, salary, department_id) VALUES (?,?,?);",
             [data.title, data.salary, data.department_id],
-            function(err, result) {
+            function(err, res) {
                 if (err) throw err;
             })
-            connection.query("SELECT * FROM role", function (err, result) {
+            connection.query("SELECT * FROM role", function (err, res) {
                 if (err) throw err;
-                console.table(result);
+                console.table(res);
                 viewDatabase();
             });
 
         });
 }
-
-
 
 
 viewDatabase();
