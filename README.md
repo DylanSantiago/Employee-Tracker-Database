@@ -20,4 +20,4 @@ After installation, you must enter MySQL shell to create tables and seed the dat
 (Developing)
 
 ## Deployed Link
-(Developing)
+[Video Tutorial](https://drive.google.com/file/d/1nYlkA7LjxMr59_NC5QnOpfccHtnN0QfY/view)
